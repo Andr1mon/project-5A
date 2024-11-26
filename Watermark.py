@@ -86,8 +86,8 @@ class ImageDataset(Dataset):
         return cover, logo, cover_norm
 
 # Initialisation des ensembles de test et d'entraînement
-train_dataset = ImageDataset('C:/Users/Koala/Desktop/project 5A/dataset/train')
-test_dataset = ImageDataset('C:/Users/Koala/Desktop/project 5A/dataset/test')
+train_dataset = ImageDataset('dataset/train')
+test_dataset = ImageDataset('dataset/test')
 train_dataloader = torch.utils.data.DataLoader(
 train_dataset, batch_size=16, shuffle=True, num_workers=0
 )
@@ -406,7 +406,8 @@ def train_epoch(
                 plt.grid()
                 plt.plot(epoch_loss_trace)
                 #plt.show()
-                plt.savefig("batch #" + str(i + 1) + ".png")
+                plt.savefig("training/epoch_" + str(number) + " batch_" + str(i + 1) + ".png")
+                plt.close()
     out.clear_output()
     return epoch_loss_trace
 
@@ -431,8 +432,8 @@ def train_model(
         device=device,
         )
         loss_trace += epoch_loss_trace
+        torch.save(model, f"models/model_{epoch_number}.pt")
         epoch_number += 1
-        torch.save(model, f"C:/Users/Koala/Desktop/project 5A/models/model_{epoch_number}.pt")
     plt.figure(figsize=(10, 5))
     plt.title("Total training loss", fontsize=22)
     plt.xlabel("Iteration", fontsize=16)
@@ -440,7 +441,8 @@ def train_model(
     plt.grid()
     plt.plot(loss_trace)
     #plt.show()
-    plt.savefig("Training.png")
+    plt.savefig("training/training.png")
+    plt.close()
     model.eval()
 
 model = AutoEncoder()
